@@ -104,7 +104,3 @@ if user_input := st.chat_input("Ask a technical question..."):
         with st.chat_message("assistant"):
             st.text_input("My initial idea...", key="brainstorm")
 
-# Progress tracker
-st.sidebar.markdown("### Research Milestones")
-st.sidebar.progress(0.2)
-st.sidebar.caption("Week 1: Knowledge Mapping")
