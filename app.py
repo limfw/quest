@@ -7,95 +7,119 @@ st.set_page_config(
     layout="centered"
 )
 
-# Header with your theme and project title
+# Header with theme
 st.title("Hybrid Tokenization Strategies in LLMs")
 st.markdown("""
 *"AI isn’t magic, it’s math + data + smart processing."*  
-**Demo Goal**: Show how tokenization impacts regression accuracy in decoding tasks.
+**Demo Goal**: Show how tokenization impacts regression accuracy.
 """)
 
-# Initialize chat with educational prompt
+# Initialize chat
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "assistant", "content": """
-👋 Hi! I'm a demo for your **LLM tokenization project**. Ask me:  
-- "What is tokenization?"  
-- "How does math improve LLMs?"  
-- "What’s hybrid tokenization?"  
-- Or type "bye" to exit.
+👋 Hi! I'm your LLM tokenization demo bot. I know basics now, but in 5 weeks...  
+**What we'll discover together**:  
+1. How hybrid tokenization reduces decoding errors  
+2. The math behind regression accuracy  
+3. Your innovative ideas!  
+
+Try asking:  
+- "What's the hardest part of tokenization?"  
+- "How could we improve this?"  
+- "Show me a math example"  
 """}
     ]
 
-# Reset chat button
-if st.sidebar.button("♻️ Reset Chat", help="Start a new conversation"):
-    st.session_state.messages = [
-        {"role": "assistant", "content": "🔄 Chat reset! Ask about tokenization, math in AI, or your project."}
-    ]
-    st.rerun()
+# Knowledge base with humble responses
+KNOWLEDGE = {
+    "tokenization": """
+**Current Understanding**:  
+Tokenization splits text into units (tokens).  
 
-# Display chat
+**5-Week Potential**:  
+We'll test if hybrid approaches (BPE + characters) reduce outliers in regression tasks.
+""",
+    "math": """
+**Current Math**:  
+Basic linear algebra for embeddings.  
+
+**Future Exploration**:  
+- Gradient stability in loss functions  
+- Probability distributions for decoding  
+*What math would you want to implement?*  
+""",
+    "improve": """
+🤔 **Great question! Right now I don't know - but here's how we could find out**:  
+1. Collect tokenization error cases (Week 2)  
+2. Analyze regression outliers (Week 3)  
+3. Prototype hybrid strategies (Week 5)  
+
+*What variables would you track?*  
+""",
+    "hardest": """
+❗ **Current Challenge**:  
+Balancing token granularity vs. computational cost.  
+
+💡 **Your 5-Week Mission**:  
+Find the sweet spot using:  
+- Entropy measurements  
+- Error rate analysis  
+""",
+    "don't know": """
+🧠 **Admission**: I don't have that answer yet... but here's how WE will solve it:  
+1. Identify the knowledge gap (Week 1)  
+2. Research papers + datasets (Week 2-3)  
+3. Build/test solutions (Week 4-5)  
+
+*What hypothesis would you test?*  
+"""
+}
+
+# Dynamic response generator
+def generate_response(user_input: str) -> str:
+    user_input_lower = user_input.lower()
+    
+    # Direct matches
+    for keyword, response in KNOWLEDGE.items():
+        if keyword in user_input_lower:
+            return response
+    
+    # Catch-alls for unknown questions
+    if any(w in user_input_lower for w in ["how", "why", "what if"]):
+        return KNOWLEDGE["don't know"]
+    if any(w in user_input_lower for w in ["better", "improve", "enhance"]):
+        return KNOWLEDGE["improve"]
+    
+    return """🔮 Interesting question! While I can't answer this yet, in 5 weeks we might:  
+- Develop new evaluation metrics  
+- Create visualization tools  
+- Discover unexpected patterns  
+
+*Where would you start investigating?*  
+"""
+
+# Chat UI
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.write(message["content"])
 
-# Knowledge base (customize with your research)
-KNOWLEDGE = {
-    "tokenization": """
-**Tokenization** splits text into units (tokens) for LLMs. Your project explores:  
-- **Hybrid Strategies**: Mixing subword + character-level tokens.  
-- **Regression Impact**: Better tokenization → Fewer decoding errors → Higher accuracy.  
-""",
-    "math": """
-**Math in LLMs**:  
-1. **Linear Algebra**: Embeddings = Vectors  
-2. **Probability**: Next-token prediction  
-3. **Optimization**: Loss minimization (e.g., cross-entropy)  
-""",
-    "hybrid": """
-**Hybrid Tokenization** (Your Focus):  
-- Combines strengths of subword (BPE) + character-level methods.  
-- **Goal**: Reduce outliers in regression tasks during decoding.  
-- **Math Link**: Improves gradient stability in loss functions.  
-""",
-    "bye": "🌟 Goodbye! Remember: AI = Math + Data + Smart Processing. Keep coding!",
-    "hi": "🧠 Hello! Let’s discuss tokenization and math in LLMs."
-}
-
-# User input
-if user_input := st.chat_input("Ask about tokenization or math..."):
-    # Add user message
+if user_input := st.chat_input("Ask about tokenization..."):
     st.session_state.messages.append({"role": "user", "content": user_input})
     with st.chat_message("user"):
         st.write(user_input)
-
-    # Generate response
-    user_input_lower = user_input.lower()
-    bot_response = None
-
-    # Check greetings/bye
-    if any(word in user_input_lower for word in ["hi", "hello"]):
-        bot_response = KNOWLEDGE["hi"]
-    elif any(word in user_input_lower for word in ["bye", "goodbye"]):
-        bot_response = KNOWLEDGE["bye"]
-    else:
-        # Check knowledge base
-        for keyword, answer in KNOWLEDGE.items():
-            if keyword in user_input_lower:
-                bot_response = answer
-                break
     
-    # Default response
-    if not bot_response:
-        bot_response = "💡 Try asking about: tokenization, math in AI, or hybrid methods."
-
-    # Add bot response
+    bot_response = generate_response(user_input)
+    
     st.session_state.messages.append({"role": "assistant", "content": bot_response})
     with st.chat_message("assistant"):
         st.write(bot_response)
 
-# Footer with your theme
+# Footer
 st.sidebar.markdown("---")
 st.sidebar.caption("""
-**Theme**: AI = Math + Data + Smart Processing  
-**Project**: Hybrid Tokenization for LLM Regression Accuracy  
+**Pedagogical Strategy**:  
+1. Admit knowledge limits  
+2. Model problem-solving  
+3. Invite co-creation  
 """)
