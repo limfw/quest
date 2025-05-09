@@ -56,7 +56,7 @@ Basic linear algebra for embeddings.
 🔍 Interesting question! While I can't answer this yet...  
 
 💡 **How we'll tackle it**:  
-1. Week 1: Define the problem → "{}"  
+1. Week 1: Define the problem  
 2. Week 2-3: Research existing solutions  
 3. Week 4-5: Test our own approach  
 
